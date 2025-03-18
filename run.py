@@ -5,7 +5,7 @@ from huggingface_hub import login
 import os
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="app/templates")
     load_environment_variables()  # Load biến môi trường
     
     # Đăng nhập Hugging Face

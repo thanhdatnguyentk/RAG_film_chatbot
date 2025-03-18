@@ -1,15 +1,13 @@
 import torch
-from transformers import RagTokenizer, RagRetriever, RagSequenceForGeneration
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
-
+tokenizer = AutoTokenizer.from_pretrained("google/gemma-2-2b-it")
+model = AutoModelForCausalLM.from_pretrained("google/gemma-2-2b-it").to("cuda")
 def generate_answer(question, retrieved_text):
-    model_name = "facebook/rag-sequence-nq"
-    tokenizer = RagTokenizer.from_pretrained(model_name)
-    generator = RagSequenceForGeneration.from_pretrained(model_name).to("cuda")
     inputs = f"Query: {question}\n : \n{retrieved_text}"
-    inputs.to("cuda")
-    
+    print(inputs)
+    inputs = tokenizer(inputs, return_tensors="pt").to("cuda")
     with torch.no_grad():
-        generated = generator.generate(**inputs)
-    
-    return tokenizer.batch_decode(generated, skip_special_tokens=True)[0]
+        respone = model.generate(**inputs, max_new_tokens=200)
+    outputs = tokenizer.batch_decode(respone, skip_special_tokens=True)[0]
+    return outputs

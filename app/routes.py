@@ -9,14 +9,15 @@ def register_routes(app):
 
 @api_bp.route("/")
 def home():
-    render_template("index.html")
-    return "Hello, World!"
+    #check path
+    return render_template("index.html")
+
 @api_bp.route("/ask", methods=["POST"])
 def ask():
     data = request.json
     question = data.get("question", "")
-
-    retrieved_text = MongoDb.get_search_result(question)
+    db = MongoDb()
+    retrieved_text = db.get_search_result(query=question)
     answer = generate_answer(question, retrieved_text)
 
     return jsonify({"question": question, "retrieved_text": retrieved_text, "answer": answer})
