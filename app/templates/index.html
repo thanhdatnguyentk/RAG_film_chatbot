@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask RAG App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #A7C7E7;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            max-width: 400px;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #5A9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4682B4;
+        }
+    </style>
+    <script>
+        async function askQuestion() {
+            const question = document.getElementById("question").value;
+            const response = await fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question })
+            });
+            const data = await response.json();
+            document.getElementById("response").innerText = "Answer: " + data.answer;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Ask a Question</h1>
+        <input type="text" id="question" placeholder="Enter your question">
+        <button onclick="askQuestion()">Submit</button>
+        <p id="response"></p>
+    </div>
+</body>
+</html>

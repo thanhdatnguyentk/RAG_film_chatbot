@@ -1,0 +1,9 @@
+
+flask
+huggingface_hub==0.24.6
+pymongo==4.11.2
+python-dotenv==1.0.1
+sentence_transformers==3.4.1
+torch
+transformers
+
